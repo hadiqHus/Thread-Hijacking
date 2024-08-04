@@ -1,8 +1,6 @@
 # Thread-Hijacking
 This code demonstrates a process injection technique, specifically injecting shellcode into a running instance of notepad.exe. 
 
-This code:
-
 # Prompts the user to start notepad.exe and Process Hacker 2.
 Asks the user for the PID of notepad.exe (error check).
 ![module stomp](https://github.com/hadiqHus/Thread-Hijacking/assets/64806441/ab558dff-8662-4846-876a-198b31035c63)
