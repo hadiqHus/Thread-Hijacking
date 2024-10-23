@@ -1,4 +1,3 @@
-same for git for previous example
 #include <iostream>
 #include <Windows.h>
 #include <TlHelp32.h>
